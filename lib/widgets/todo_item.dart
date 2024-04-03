@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/constants/colors.dart';
+import 'package:mytodo/models/todo.dart';
 
 class TodoItem extends StatelessWidget {
-  const TodoItem({super.key});
+  const TodoItem({Key? key, required this.todo}) : super(key: key);
+
+  final ToDo todo;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       child: ListTile(
         onTap: () {
           print("TO do item clicked");
@@ -15,15 +19,15 @@ class TodoItem extends StatelessWidget {
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         tileColor: Colors.white,
         leading: Icon(
-          Icons.check_box,
+          todo.isDone ? Icons.check_box : Icons.check_box_outline_blank,
           color: tdBlue,
         ),
         title: Text(
-          "Call Ramana",
+          todo.todoText!,
           style: TextStyle(
               fontSize: 16,
               color: tdBlack,
-              decoration: TextDecoration.lineThrough),
+              decoration: todo.isDone ? TextDecoration.lineThrough : null),
         ),
         trailing: Container(
           padding: EdgeInsets.all(0),
@@ -36,7 +40,10 @@ class TodoItem extends StatelessWidget {
             color: Colors.white,
             iconSize: 18,
             icon: Icon(Icons.delete),
-            onPressed: () {},
+            onPressed: () {
+              print("clicked on delete button");
+              todo.isDone = true;
+            },
           ),
         ),
       ),
