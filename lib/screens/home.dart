@@ -69,9 +69,13 @@ class Home extends StatelessWidget {
                 child: ElevatedButton(
                   child: Text(
                     '+',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 40),
                   ),
                   onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: tdBlue,
+                      minimumSize: Size(60, 60),
+                      elevation: 10),
                 ),
               )
             ]),
