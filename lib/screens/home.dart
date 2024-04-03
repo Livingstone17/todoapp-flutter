@@ -12,7 +12,20 @@ class Home extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         child: Column(
-          children: [searchBox()],
+          children: [
+            searchBox(),
+            ListView(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 50, bottom: 50),
+                  child: Text(
+                    'All Todos',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       ),
     );
