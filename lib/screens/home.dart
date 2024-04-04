@@ -14,6 +14,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final todosList = ToDo.todoList();
+  List<ToDo> _foundTodo = [];
+  final _todoController = TextEditingController();
+
+  @override
+  void initState() {
+    _foundTodo = todosList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +46,7 @@ class _HomeState extends State<Home> {
                               fontSize: 30, fontWeight: FontWeight.w500),
                         ),
                       ),
-                      for (ToDo todo in todosList)
+                      for (ToDo todo in _foundTodo.reversed)
                         TodoItem(
                           todo: todo,
                           onTodoChanged: _handleTodoChange,
@@ -69,6 +77,7 @@ class _HomeState extends State<Home> {
                     ],
                     borderRadius: BorderRadius.circular(10)),
                 child: TextField(
+                  controller: _todoController,
                   decoration: InputDecoration(
                       hintText: "Add a new todo", border: InputBorder.none),
                 ),
@@ -80,7 +89,9 @@ class _HomeState extends State<Home> {
                     '+',
                     style: TextStyle(fontSize: 40),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _addTodo(_todoController.text);
+                  },
                   style: ElevatedButton.styleFrom(
                       // backgroundColor: tdGrey,
                       // minimumSize: Size(60, 60),
@@ -106,12 +117,38 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _addTodo(String toDo) {
+    setState(() {
+      todosList.add(ToDo(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          todoText: toDo));
+    });
+    _todoController.clear();
+  }
+
+  void _runFilter(String enteredKeyWord) {
+    List<ToDo> results = [];
+    if (enteredKeyWord.isEmpty) {
+      results = todosList;
+    } else {
+      results = todosList
+          .where((item) => item.todoText!
+              .toLowerCase()
+              .contains(enteredKeyWord.toLowerCase()))
+          .toList();
+    }
+    setState(() {
+      _foundTodo = results;
+    });
+  }
+
   Widget searchBox() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: TextField(
+        onChanged: (value) => _runFilter(value),
         decoration: InputDecoration(
             contentPadding: EdgeInsets.all(0),
             prefixIcon: Icon(
