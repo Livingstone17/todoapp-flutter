@@ -3,9 +3,13 @@ import 'package:mytodo/constants/colors.dart';
 import 'package:mytodo/models/todo.dart';
 
 class TodoItem extends StatelessWidget {
-  const TodoItem({Key? key, required this.todo}) : super(key: key);
+  const TodoItem(
+      {Key? key, required this.todo, this.onDeleteItem, this.onTodoChanged})
+      : super(key: key);
 
   final ToDo todo;
+  final onTodoChanged;
+  final onDeleteItem;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +18,7 @@ class TodoItem extends StatelessWidget {
       child: ListTile(
         onTap: () {
           print("TO do item clicked");
+          onTodoChanged(todo);
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -42,7 +47,7 @@ class TodoItem extends StatelessWidget {
             icon: Icon(Icons.delete),
             onPressed: () {
               print("clicked on delete button");
-              todo.isDone = true;
+              onDeleteItem(todo.id);
             },
           ),
         ),
